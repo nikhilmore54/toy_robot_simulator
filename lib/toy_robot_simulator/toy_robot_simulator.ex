@@ -23,9 +23,9 @@ defmodule ToyRobotSimulator.ToyRobotSimulator do
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
 
-  def move(pid), do: GenServer.call(pid, :move)
-  def left(pid), do: GenServer.call(pid, :left)
-  def right(pid), do: GenServer.call(pid, :right)
+  def move(pid), do: GenServer.cast(pid, :move)
+  def left(pid), do: GenServer.cast(pid, :left)
+  def right(pid), do: GenServer.cast(pid, :right)
   def report(pid), do: GenServer.call(pid, :report)
 
   def init({position_x, position_y, facing_direction} = state) do
@@ -37,7 +37,7 @@ defmodule ToyRobotSimulator.ToyRobotSimulator do
     end
   end
 
-  def handle_call(:move, _from, {position_x, position_y, facing_direction} = state) do
+  def handle_cast(:move, {position_x, position_y, facing_direction} = state) do
     {position_x, position_y, facing_direction} =
       case facing_direction do
         :north -> {position_x, position_y + 1, facing_direction}
@@ -48,20 +48,20 @@ defmodule ToyRobotSimulator.ToyRobotSimulator do
 
     if position_x in 0..4 and position_y in 0..4 do
       state = {position_x, position_y, facing_direction}
-      {:reply, state, state}
+      {:noreply, state}
     else
-      {:reply, state, state}
+      {:noreply, state}
     end
   end
 
-  def handle_call(:left, _from, {position_x, position_y, facing_direction}) do
+  def handle_cast(:left, {position_x, position_y, facing_direction}) do
     state = {position_x, position_y, Map.get(@turn_left, facing_direction)}
-    {:reply, state, state}
+    {:noreply, state}
   end
 
-  def handle_call(:right, _from, {position_x, position_y, facing_direction}) do
+  def handle_cast(:right, {position_x, position_y, facing_direction}) do
     state = {position_x, position_y, Map.get(@turn_right, facing_direction)}
-    {:reply, state, state}
+    {:noreply, state}
   end
 
   def handle_call(:report, _from, state) do
