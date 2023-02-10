@@ -27,7 +27,9 @@ defmodule ToyRobotSimulator do
     "place" =>
       "Places the Robot into X,Y facing F (Default is 0,0,North). " <>
         "Where facing is: north, west, south or east. " <>
-        "Format: \"place [X,Y,F]\".",
+        "Format: \"place [X,Y,F]\".For example, \"place\" would" <>
+        "place the robot on (0, 0) facing north and \"place 3,1," <>
+        " west\" would place the robot in the tile (3,1) facing west.",
     "report" => "The Toy Robot reports about its position",
     "left" => "Rotates the robot to the left",
     "right" => "Rotates the robot to the right",
