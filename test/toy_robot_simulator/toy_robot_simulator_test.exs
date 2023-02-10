@@ -13,28 +13,31 @@ defmodule ToyRobotSimulator.ToyRobotSimulatorTest do
 
     test "call init to take default params" do
       {:ok, pid} = ToyRobotSimulator.start_link()
-      assert ToyRobotSimulator.report(pid) ==  {0, 0, :north}
+      assert ToyRobotSimulator.place(pid) == {0, 0, :north}
     end
 
     test "call init with invalid params" do
-      assert  ToyRobotSimulator.init({:zero, :zero, :north}) == {:error, :invalid_params}
-      assert  ToyRobotSimulator.init({0, :zero, :north}) == {:error, :invalid_params}
-      assert  ToyRobotSimulator.init({:zero, 0, :north}) == {:error, :invalid_params}
-      assert  ToyRobotSimulator.init({0, 0, "north"}) == {:error, :invalid_params}
-      assert  ToyRobotSimulator.init({5, 3, :north}) == {:error, :invalid_params}
-      assert  ToyRobotSimulator.init({2, 7, :north}) == {:error, :invalid_params}
-      assert  ToyRobotSimulator.init({0, 0, :invalid_direction}) == {:error, :invalid_params}
+      {:ok, pid} = ToyRobotSimulator.start_link()
+      assert ToyRobotSimulator.place(pid, {:zero, :zero, :north}) == {:error, :invalid_postion_or_facing_direction}
+      assert ToyRobotSimulator.place(pid, {0, :zero, :north}) == {:error, :invalid_postion_or_facing_direction}
+      assert ToyRobotSimulator.place(pid, {:zero, 0, :north}) == {:error, :invalid_postion_or_facing_direction}
+      assert ToyRobotSimulator.place(pid, {0, 0, "north"}) == {:error, :invalid_postion_or_facing_direction}
+      assert ToyRobotSimulator.place(pid, {5, 3, :north}) == {:error, :invalid_postion_or_facing_direction}
+      assert ToyRobotSimulator.place(pid, {2, 7, :north}) == {:error, :invalid_postion_or_facing_direction}
+      assert ToyRobotSimulator.place(pid, {0, 0, :invalid_direction}) == {:error, :invalid_postion_or_facing_direction}
     end
   end
 
   describe "rotate toy" do
     test "left" do
       {:ok, pid} = ToyRobotSimulator.start_link()
+      ToyRobotSimulator.place(pid)
       assert {0, 0, :west} = ToyRobotSimulator.left(pid)
     end
 
     test "right" do
       {:ok, pid} = ToyRobotSimulator.start_link()
+      ToyRobotSimulator.place(pid)
       assert {0, 0, :east} = ToyRobotSimulator.right(pid)
     end
   end
@@ -42,6 +45,7 @@ defmodule ToyRobotSimulator.ToyRobotSimulatorTest do
   describe "move toy" do
     test "valid move" do
       {:ok, pid} = ToyRobotSimulator.start_link()
+      ToyRobotSimulator.place(pid)
       assert {0, 1, :north} = ToyRobotSimulator.move(pid)
     end
 
