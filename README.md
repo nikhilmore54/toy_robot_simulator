@@ -1,3 +1,4 @@
+
 # ToyRobotSimulator
 
   
@@ -63,5 +64,9 @@ report - The Toy Robot reports about its position
 
 right - Rotates the robot to the right
 ```
+
+    
+
+> The CLI functionality has been adapted from [https://github.com/ck3g/toy_robot/blob/master/lib/cli.ex](https://github.com/ck3g/toy_robot/blob/master/lib/cli.ex)
 
 Your application is now ready to run. You may follow the instructions shown in the help banner as above to place and move your robot. 
